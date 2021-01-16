@@ -1,43 +1,42 @@
-import tkinter as tk
-from tkinter import font
-import os
+import csv
+import random
 
-root = tk.Tk()
+quotesArray = []
 
-displayLabelFont = font.Font(family='Helvetica', name='quotesFont', size=14)
+with open('quotes.csv') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    line_count = 0
+    for row in csv_reader:
+        if line_count == 0:
+            print(f'Column names are {", ".join(row)}')
+            line_count += 1
+        else:
+           quotesArray.append(row)
 
-txtFile = open('file.txt')
+def quoteSelection():
+    quoteNumber = random.randint(0, len(quotesArray))
 
+    selectedQuote = quotesArray[quoteNumber]
 
-canvas = tk.Canvas(root, height=500, width=800)
-canvas.grid(columnspan=3, rowspan=4)
+    print(selectedQuote)
 
+userInput = input('Would you like a Random Quote? Y/N \n')
 
-updatingQuestionText = tk.StringVar()
-updatingAnswerText = tk.StringVar()
-questionDisplayLabel = tk.Label(root, textvariable=updatingQuestionText, font=displayLabelFont)
-answerDisplayLabel = tk.Label(root, textvariable=updatingAnswerText, font=displayLabelFont)
-questionDisplayLabel.grid(column=1, row=1)
-answerDisplayLabel.grid(column=2, row=1)
+if userInput == 'Y' or userInput == 'y':
+    userWantQuotes = True
+    quoteSelection()
 
-line = txtFile.readline()
-wordsInLine = line.split('-')
+else:
+    print('Goodbye')
+    userWantQuotes = False
 
+while userWantQuotes:   
+    userInput = input('Would you like another Quote? Y/N \n')
 
-def displayQuestionWord():
-    updatingQuestionText.set(wordsInLine[0])
-    return
+    if userInput == 'Y' or userInput == 'y':
+        userWantQuotes = True
+        quoteSelection()
 
-def revealAnswer():
-    updatingAnswerText.set(wordsInLine[1])
-    return
-
-
-
-btnDisplayWords = tk.Button(root, text='Display a Word', padx=10, pady=10, fg="white", bg="#263042", command=displayQuestionWord)
-btnRevealAnswer = tk.Button(root, text='Display the Answer', padx=10, pady=10, fg="white", bg="#263042", command=revealAnswer)
-
-btnDisplayWords.grid(column=1, row=2)
-btnRevealAnswer.grid(column=2, row=2)
-
-root.mainloop()
+    else:
+        print('Goodbye')
+        userWantQuotes = False
