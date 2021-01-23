@@ -27,11 +27,11 @@ class QuotesApp(tk.Frame):
         self.quotePrint = tk.Button(self)
         self.quotePrint['text'] = 'Print a Quote'
         self.quotePrint['command'] = self.quoteSelection
-        self.quotePrint.pack(padx=100, pady=60)
+        self.quotePrint.pack(side='bottom', padx=20, pady=40)
 
-        self.quoteLabel = tk.Label(self, wraplength=550)
+        self.quoteLabel = tk.Label(self, wraplength=550, height=16)
         self.quoteLabel['text'] = 'Quote will display here'
-        self.quoteLabel.pack(side='bottom')
+        self.quoteLabel.pack(side='top', pady=40)
 
         self.authorLabel = tk.Label(self, wraplength=500)
         self.authorLabel['text'] = 'Author'
