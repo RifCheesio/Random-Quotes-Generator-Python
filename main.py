@@ -1,5 +1,8 @@
 import csv
 import random
+import time
+import tkinter as tk
+import textwrap
 
 quotesArray = []
 
@@ -13,30 +16,38 @@ with open('quotes.csv') as csv_file:
         else:
            quotesArray.append(row)
 
-def quoteSelection():
-    quoteNumber = random.randint(0, len(quotesArray))
+class QuotesApp(tk.Frame):
+    def __init__(self, master=None):
+        super().__init__(master)
+        self.master = master
+        self.pack()
+        self.createWidgets()
 
-    selectedQuote = quotesArray[quoteNumber]
+    def createWidgets(self):
+        self.quotePrint = tk.Button(self)
+        self.quotePrint['text'] = 'Print a Quote'
+        self.quotePrint['command'] = self.quoteSelection
+        self.quotePrint.pack(padx=100, pady=60)
 
-    print(selectedQuote)
+        self.quoteLabel = tk.Label(self, wraplength=550)
+        self.quoteLabel['text'] = 'Quote will display here'
+        self.quoteLabel.pack(side='bottom')
 
-userInput = input('Would you like a Random Quote? Y/N \n')
+        self.authorLabel = tk.Label(self, wraplength=500)
+        self.authorLabel['text'] = 'Author'
+        self.authorLabel.pack(padx=100)
 
-if userInput == 'Y' or userInput == 'y':
-    userWantQuotes = True
-    quoteSelection()
+    
+    def quoteSelection(self):
+        quoteNumber = random.randint(0, len(quotesArray)-1)
+        selectedQuote = quotesArray[quoteNumber]
+        self.quoteLabel['text'] = selectedQuote[0]
+        self.authorLabel['text'] = selectedQuote[1]
 
-else:
-    print('Goodbye')
-    userWantQuotes = False
 
-while userWantQuotes:   
-    userInput = input('Would you like another Quote? Y/N \n')
+root = tk.Tk()
+app = QuotesApp(master=root)
 
-    if userInput == 'Y' or userInput == 'y':
-        userWantQuotes = True
-        quoteSelection()
-
-    else:
-        print('Goodbye')
-        userWantQuotes = False
+app.master.minsize(800,500)
+app.master.maxsize(800,500)
+app.mainloop()
